@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project basedir="." name="ADSW21-practica1" default="ADSW21-practica1-Entrega">
+<property environment="env"/>
+<property name="debuglevel" value="source,lines,vars"/>
+<property name="target" value="1.8"/>
+<property name="source" value="1.8"/>
+<path id="JUnit 4.libraryclasspath">
+    <pathelement location=".lib/junit.jar"/>
+	<pathelement location=".lib/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+</path>
+<path id="ADSW21-practica1.classpath">
+	<pathelement location="bin"/>
+	<path refid="JUnit 4.libraryclasspath"/>
+</path>
+<path id="ADSW21-practica1_aux.classpath">
+	<pathelement location=".lib/setting.jar"/>
+</path>
+<target name="init">
+	<delete includeemptydirs="true">
+	    <fileset dir="bin" defaultexcludes="false"/>
+	</delete>
+	<mkdir dir="bin"/>
+	<copy includeemptydirs="false" todir="bin">
+		<fileset dir="src">
+        	<exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+</target>
+<target depends="init" name="build-project">
+    <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+        <src path="src"/>
+        <classpath refid="ADSW21-practica1.classpath"/>
+    </javac>
+</target>
+<target depends="build-project" name="ADSW21-practica1-Entrega">
+    <java classname="Practica1Entrega" fork="yes">
+        <arg line=""/>
+        <classpath refid="ADSW21-practica1.classpath"/>
+    	<classpath refid="ADSW21-practica1_aux.classpath"/>
+    </java>
+</target>
+</project>

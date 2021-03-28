@@ -14,6 +14,8 @@ import java.util.Set;
  * el ayuntamiento de Madrid
  * 
  * @author mmiguel
+ * @author anamtnez3
+ * @author manu-ef
  *
  */
 public class Callejero {
@@ -36,6 +38,8 @@ public class Callejero {
 
 	protected static final String fichero="VialesVigentes_20201220.csv";
 	protected Via[] vias;
+	private Via[] viasPorNombre;
+	private boolean viasOrdenadas;
 
 	/**
 	 * Constructor de callejero a partir de algun tipo de stream que 
@@ -60,6 +64,7 @@ public class Callejero {
 		}
 		viales.close();
 		ordenaVias();
+		viasOrdenadas = false;
 	}
 	
 	/**
@@ -102,7 +107,11 @@ public class Callejero {
 	 * @return conjunto de vias ordenadas por nombre 
 	 */
 	public Via[] ordenaViasPorNombre() {
-		// TODO
+		
+		//comprobamos si el array esta ordenado
+		if (viasOrdenadas)
+			return viasPorNombre;
+		
 		return null;
 	}
 

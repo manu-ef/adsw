@@ -72,9 +72,69 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
+		int[] codigosVias = new int[vias.length];
+		for(int i=0; i<vias.length; i++) {
+			codigosVias[i] = vias[i].getCodigo();
+		}
+		bottomUpSort(codigosVias, new int[codigosVias.length]);
+
 		// llamamos al metodo fachada
 		ordenaViasPorSeleccion();
 	}
+
+	/**
+	 * Metodo de ordenacion mediante MergeSort
+	 * @param data array de enteros para ordenar
+	 */
+	private void bottomUpSort(int[] data, int[] aux) {
+        int n = data.length;
+        for (int window = 1; window < n; window *= 2) {
+            for (int i = 0; i < n; i += 2 * window) {
+                int iLeft = i;
+                int iRight = Math.min(i + window, n);
+                int iEnd = Math.min(i + 2 * window, n);
+                bottomUpMerge(data, iLeft, iRight, iEnd, aux);
+            }
+            System.arraycopy(aux, 0, data, 0, n);
+        }
+    }
+
+    private void bottomUpMerge(int[] data, int iLeft, int iRight, int iEnd, int[] aux) {
+
+        assert sorted(data, iLeft, iRight);
+        assert sorted(data, iRight, iEnd);
+        int i0 = iLeft;
+        int i1 = iRight;
+
+        int dst= iLeft;
+        while (i0 < iRight && i1 < iEnd) {
+            if (data[i0] < data[i1])
+                aux[dst++] = data[i0++];
+            else
+                aux[dst++] = data[i1++];
+        }
+        while (i0 < iRight)
+            aux[dst++] = data[i0++];
+        while (i1 < iEnd)
+            aux[dst++] = data[i1++];
+        assert sorted(aux, iLeft, iEnd);
+    }
+	
+    /**
+     * Comprueba si una parte de un array esta ordenada
+     *
+     * @param datos array para comprobar
+     * @param a indice del primer elemento
+     * @param z indice del ultimo elemento + 1
+     * @return true si datos [a..z) esta ordenado
+     */
+    private boolean sorted(int[] datos, int a, int z) {
+        for (int i = a; i + 1 < z; i++)
+            if (datos[i] > datos[i + 1])
+                return false;
+        return true;
+    }
+	
 	
 	// ordenamos el array, algoritmo de seleccion
 	private void ordenaViasPorSeleccion() {
@@ -89,6 +149,8 @@ public class Callejero {
 			vias[m] = aux;
 		}
 	}
+
+
 	
 	/**
 	 * Imprime en salida estandar todos los viales del callejero

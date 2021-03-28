@@ -72,7 +72,17 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
-		// TODO
+		// ordenamos el array, algoritmo de seleccion
+		for (int i = 0; i < vias.length; i++) {
+			int m = i;
+			for (int j = i+1; j < vias.length; j++) {
+				if(vias[j].getCodigo() < vias[m].getCodigo())
+					m = j;
+			}
+			Via aux = vias[i];
+			vias[i] = vias[m];
+			vias[m] = aux;
+		}
 	}
 	
 	/**
@@ -117,7 +127,7 @@ public class Callejero {
 		for(int i = 0; i < viasPorNombre.length; i++)
 			viasPorNombre[i] = this.vias[i];
 		
-		// ordenamos el nuevo array
+		// ordenamos el nuevo array, algoritmo de seleccion
 		for (int i = 0; i < viasPorNombre.length; i++) {
 			int m = i;
 			for (int j = i+1; j < viasPorNombre.length; j++) {

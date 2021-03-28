@@ -72,7 +72,12 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
-		// ordenamos el array, algoritmo de seleccion
+		// llamamos al metodo fachada
+		ordenaViasPorSeleccion();
+	}
+	
+	// ordenamos el array, algoritmo de seleccion
+	private void ordenaViasPorSeleccion() {
 		for (int i = 0; i < vias.length; i++) {
 			int m = i;
 			for (int j = i+1; j < vias.length; j++) {
@@ -127,7 +132,18 @@ public class Callejero {
 		for(int i = 0; i < viasPorNombre.length; i++)
 			viasPorNombre[i] = this.vias[i];
 		
-		// ordenamos el nuevo array, algoritmo de seleccion
+		// llamamos al metodo fachada
+		ordenaViasPorNombrePorSeleccion();
+		
+		// actualizamos cambios en viasOrdenadas
+		viasOrdenadas = true;
+		
+		// devolvemos el array ordenado
+		return viasPorNombre;
+	}
+	
+	// ordenamos el nuevo array, algoritmo de seleccion
+	private void ordenaViasPorNombrePorSeleccion() {
 		for (int i = 0; i < viasPorNombre.length; i++) {
 			int m = i;
 			for (int j = i+1; j < viasPorNombre.length; j++) {
@@ -138,14 +154,8 @@ public class Callejero {
 			viasPorNombre[i] = viasPorNombre[m];
 			viasPorNombre[m] = aux;
 		}
-		
-		// actualizamos cambios en viasOrdenadas
-		viasOrdenadas = true;
-		
-		// devolvemos el array ordenado
-		return viasPorNombre;
 	}
-
+	
 	public static void main(String[] args) {
 		try {
 			FileInputStream fi=new FileInputStream(fichero);

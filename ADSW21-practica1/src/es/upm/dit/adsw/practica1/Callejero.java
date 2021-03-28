@@ -108,11 +108,32 @@ public class Callejero {
 	 */
 	public Via[] ordenaViasPorNombre() {
 		
-		//comprobamos si el array esta ordenado
+		// comprobamos si el array esta ordenado
 		if (viasOrdenadas)
 			return viasPorNombre;
 		
-		return null;
+		// copiamos vias a viasPorNombre
+		viasPorNombre = new Via[this.vias.length];
+		for(int i = 0; i < viasPorNombre.length; i++)
+			viasPorNombre[i] = this.vias[i];
+		
+		// ordenamos el nuevo array
+		for (int i = 0; i < viasPorNombre.length; i++) {
+			int m = i;
+			for (int j = i+1; j < viasPorNombre.length; j++) {
+				if(viasPorNombre[j].getNombre().compareTo(viasPorNombre[m].getNombre()) < 0)
+					m = j;
+			}
+			Via aux = viasPorNombre[i];
+			viasPorNombre[i] = viasPorNombre[m];
+			viasPorNombre[m] = aux;
+		}
+		
+		// actualizamos cambios en viasOrdenadas
+		viasOrdenadas = true;
+		
+		// devolvemos el array ordenado
+		return viasPorNombre;
 	}
 
 	public static void main(String[] args) {

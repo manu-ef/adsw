@@ -12,11 +12,9 @@ import java.util.Set;
 /**
  * Clase para representar contenidos de los ficheros de viales que distribuye
  * el ayuntamiento de Madrid
- * 
  * @author mmiguel
  * @author anamtnez3
  * @author manu-ef
- *
  */
 
 public class Callejero {
@@ -51,7 +49,6 @@ public class Callejero {
 	 * incluye las vias del callejero. Ese stream esta soportado con un Scanner. 
 	 * El scanner incluye el contenido del callejero y el constructor lee el stream 
 	 * que debe estar en formato csv
-	 * 
 	 * @param viales scanner del que extraemos el contenido del callejero
 	 * @param numViales numero de viales que incluye el scanner
 	 */
@@ -73,7 +70,7 @@ public class Callejero {
 	}
 	
 	/**
-	 * Metodo que ordena las vias en función del código de via.
+	 * Algoritmo Mergesort que ordena las vias en funcion del codigo de via.
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
@@ -82,7 +79,7 @@ public class Callejero {
 	}
 
 	/**
-	 * Metodo de ordenacion mediante MergeSort
+	 * Metodo que divide el array para posteriormente comparar las vias
 	 * @param data array de Via para ordenar
 	 * @param aux array de Via del tamaño de vias
 	 */
@@ -95,10 +92,19 @@ public class Callejero {
                 int iEnd = Math.min(i + 2 * window, n);
                 bottomUpMerge(data, iLeft, iRight, iEnd, aux);
             }
+            
             System.arraycopy(aux, 0, data, 0, n);
         }
     }
-
+	
+	/**
+	 * Metodo que compara los codigos o los nombres de las via y las ordena
+	 * @param data array de Via para ordenar
+	 * @param aux array de Via del tamaño de vias
+	 * @param iLeft indice izquierdo
+	 * @param iRight indice derecho
+	 * @param iEnd indice final
+	 */
     private void bottomUpMerge(Via[] data, int iLeft, int iRight, int iEnd, Via[] aux) {
 
         assert sorted(data, iLeft, iRight);
@@ -107,6 +113,7 @@ public class Callejero {
         int i1 = iRight;
 
         int dst= iLeft;
+        
         while (i0 < iRight && i1 < iEnd) {
         	if(orden.equals(Mode.CODIGO)) {
 	            if (data[i0].getCodigo() < data[i1].getCodigo())
@@ -120,6 +127,7 @@ public class Callejero {
 	                aux[dst++] = data[i1++];
         	}
         }
+        
         while (i0 < iRight)
             aux[dst++] = data[i0++];
         while (i1 < iEnd)
@@ -129,7 +137,6 @@ public class Callejero {
 	
     /**
      * Comprueba si una parte de un array esta ordenada
-     *
      * @param datos array para comprobar
      * @param a indice del primer elemento
      * @param z indice del ultimo elemento + 1
@@ -174,29 +181,23 @@ public class Callejero {
 	}
 	
 	/**
-	 * Devuelve el cojunto de vias del callejero ordenadas por nombre
-	 * 
+	 * Metodo que comprueba si vias ya esta ordenada por nombre y crea un nuevo array de vias
+	 * Algoritmo Mergesort que devuelve el cojunto de vias ordenadas por nombre
 	 * @return conjunto de vias ordenadas por nombre 
 	 */
 	public Via[] ordenaViasPorNombre() {
-		
-		// comprobamos si el array esta ordenado
 		if (viasYaOrdenadasPorNombre)
 			return viasPorNombre;
 		
-		// copiamos vias a viasPorNombre
 		viasPorNombre = new Via[this.vias.length];
 		for(int i = 0; i < viasPorNombre.length; i++)
 			viasPorNombre[i] = this.vias[i];
 		
-		// llamamos al metodo fachada
 		orden = Mode.NOMBRE;
 		bottomUpSort(viasPorNombre, new Via[viasPorNombre.length]);
 		
-		// actualizamos cambios en viasOrdenadas
 		viasYaOrdenadasPorNombre = true;
 		
-		// devolvemos el array ordenado
 		return viasPorNombre;
 	}
 	

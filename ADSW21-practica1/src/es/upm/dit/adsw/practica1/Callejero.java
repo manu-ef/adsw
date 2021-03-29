@@ -18,6 +18,7 @@ import java.util.Set;
  * @author manu-ef
  *
  */
+
 public class Callejero {
 
 	private static final int COD_VIA=0;
@@ -72,21 +73,15 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
-		int[] codigosVias = new int[vias.length];
-		for(int i=0; i<vias.length; i++) {
-			codigosVias[i] = vias[i].getCodigo();
-		}
-		bottomUpSort(codigosVias, new int[codigosVias.length]);
-
-		// llamamos al metodo fachada
-		ordenaViasPorSeleccion();
+		bottomUpSort(vias, new Via[vias.length]);
 	}
 
 	/**
 	 * Metodo de ordenacion mediante MergeSort
-	 * @param data array de enteros para ordenar
+	 * @param data array de Via para ordenar
+	 * @param aux array de Via del tamaño de vias
 	 */
-	private void bottomUpSort(int[] data, int[] aux) {
+	private void bottomUpSort(Via[] data, Via[] aux) {
         int n = data.length;
         for (int window = 1; window < n; window *= 2) {
             for (int i = 0; i < n; i += 2 * window) {
@@ -99,7 +94,7 @@ public class Callejero {
         }
     }
 
-    private void bottomUpMerge(int[] data, int iLeft, int iRight, int iEnd, int[] aux) {
+    private void bottomUpMerge(Via[] data, int iLeft, int iRight, int iEnd, Via[] aux) {
 
         assert sorted(data, iLeft, iRight);
         assert sorted(data, iRight, iEnd);
@@ -108,7 +103,7 @@ public class Callejero {
 
         int dst= iLeft;
         while (i0 < iRight && i1 < iEnd) {
-            if (data[i0] < data[i1])
+            if (data[i0].getCodigo() < data[i1].getCodigo())
                 aux[dst++] = data[i0++];
             else
                 aux[dst++] = data[i1++];
@@ -128,29 +123,12 @@ public class Callejero {
      * @param z indice del ultimo elemento + 1
      * @return true si datos [a..z) esta ordenado
      */
-    private boolean sorted(int[] datos, int a, int z) {
+    private boolean sorted(Via[] datos, int a, int z) {
         for (int i = a; i + 1 < z; i++)
-            if (datos[i] > datos[i + 1])
+            if (datos[i].getCodigo() > datos[i + 1].getCodigo())
                 return false;
         return true;
     }
-	
-	
-	// ordenamos el array, algoritmo de seleccion
-	private void ordenaViasPorSeleccion() {
-		for (int i = 0; i < vias.length; i++) {
-			int m = i;
-			for (int j = i+1; j < vias.length; j++) {
-				if(vias[j].getCodigo() < vias[m].getCodigo())
-					m = j;
-			}
-			Via aux = vias[i];
-			vias[i] = vias[m];
-			vias[m] = aux;
-		}
-	}
-
-
 	
 	/**
 	 * Imprime en salida estandar todos los viales del callejero

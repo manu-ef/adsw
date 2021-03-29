@@ -40,7 +40,11 @@ public class Callejero {
 	protected static final String fichero="VialesVigentes_20201220.csv";
 	protected Via[] vias;
 	private Via[] viasPorNombre;
-	private boolean viasOrdenadas;
+	private boolean viasYaOrdenadasPorNombre;
+	private enum Mode {
+		CODIGO, NOMBRE;
+	};
+	private Mode orden;
 
 	/**
 	 * Constructor de callejero a partir de algun tipo de stream que 
@@ -65,7 +69,7 @@ public class Callejero {
 		}
 		viales.close();
 		ordenaVias();
-		viasOrdenadas = false;
+		viasYaOrdenadasPorNombre = false;
 	}
 	
 	/**
@@ -73,6 +77,7 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
+		orden = Mode.CODIGO;
 		bottomUpSort(vias, new Via[vias.length]);
 	}
 
@@ -103,10 +108,17 @@ public class Callejero {
 
         int dst= iLeft;
         while (i0 < iRight && i1 < iEnd) {
-            if (data[i0].getCodigo() < data[i1].getCodigo())
-                aux[dst++] = data[i0++];
-            else
-                aux[dst++] = data[i1++];
+        	if(orden.equals(Mode.CODIGO)) {
+	            if (data[i0].getCodigo() < data[i1].getCodigo())
+	                aux[dst++] = data[i0++];
+	            else
+	                aux[dst++] = data[i1++];
+        	} else if (orden.equals(Mode.NOMBRE)) {
+        		if (data[i0].getNombre().compareTo(data[i1].getNombre()) < 0)
+	                aux[dst++] = data[i0++];
+	            else
+	                aux[dst++] = data[i1++];
+        	}
         }
         while (i0 < iRight)
             aux[dst++] = data[i0++];
@@ -125,8 +137,13 @@ public class Callejero {
      */
     private boolean sorted(Via[] datos, int a, int z) {
         for (int i = a; i + 1 < z; i++)
-            if (datos[i].getCodigo() > datos[i + 1].getCodigo())
-                return false;
+        	if(orden.equals(Mode.CODIGO)) {
+	            if (datos[i].getCodigo() > datos[i + 1].getCodigo())
+	                return false;
+        	} else if(orden.equals(Mode.NOMBRE)) {
+        		if (datos[i].getNombre().compareTo(datos[i + 1].getNombre()) > 0)
+	                return false;
+        	}
         return true;
     }
 	
@@ -164,7 +181,7 @@ public class Callejero {
 	public Via[] ordenaViasPorNombre() {
 		
 		// comprobamos si el array esta ordenado
-		if (viasOrdenadas)
+		if (viasYaOrdenadasPorNombre)
 			return viasPorNombre;
 		
 		// copiamos vias a viasPorNombre
@@ -173,27 +190,14 @@ public class Callejero {
 			viasPorNombre[i] = this.vias[i];
 		
 		// llamamos al metodo fachada
-		ordenaViasPorNombrePorSeleccion();
+		orden = Mode.NOMBRE;
+		bottomUpSort(viasPorNombre, new Via[viasPorNombre.length]);
 		
 		// actualizamos cambios en viasOrdenadas
-		viasOrdenadas = true;
+		viasYaOrdenadasPorNombre = true;
 		
 		// devolvemos el array ordenado
 		return viasPorNombre;
-	}
-	
-	// ordenamos el nuevo array, algoritmo de seleccion
-	private void ordenaViasPorNombrePorSeleccion() {
-		for (int i = 0; i < viasPorNombre.length; i++) {
-			int m = i;
-			for (int j = i+1; j < viasPorNombre.length; j++) {
-				if(viasPorNombre[j].getNombre().compareTo(viasPorNombre[m].getNombre()) < 0)
-					m = j;
-			}
-			Via aux = viasPorNombre[i];
-			viasPorNombre[i] = viasPorNombre[m];
-			viasPorNombre[m] = aux;
-		}
 	}
 	
 	public static void main(String[] args) {

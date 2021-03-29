@@ -56,16 +56,16 @@ public class PruebaCallejero {
 			c.vias[m] = aux;
 		}
 		long tiempo_final = System.nanoTime();
-		System.out.println("Tiempo ordenando vías por algoritmo de selección: " + (tiempo_final-tiempo_inicio));
+		System.out.println("Tiempo ordenando vias por algoritmo de seleccion: " + (tiempo_final-tiempo_inicio));
 		
 		
 		long tiempo_inicio_Merge= System.nanoTime();
 		c.ordenaVias();
 		long tiempo_final_Merge = System.nanoTime();
-		System.out.println("Tiempo ordenando vías por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
+		System.out.println("Tiempo ordenando vias por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
 
 		
-		assertTrue("Tiempo de ejecución del algorimo Mergesort mayor.",(tiempo_final_Merge-tiempo_inicio_Merge) < (tiempo_final-tiempo_inicio));
+		assertTrue("El tiempo de ejecucion del algorimo Mergesort es bastante menor que el de seleccion (menos de la mitad).",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
 		
 	}
 	
@@ -83,16 +83,16 @@ public class PruebaCallejero {
 			c.vias[m] = aux;
 		}
 		long tiempo_final = System.nanoTime();
-		System.out.println("Tiempo ordenando vías por algoritmo de selección: " + (tiempo_final-tiempo_inicio));
+		System.out.println("Tiempo ordenando vias por algoritmo de seleccion: " + (tiempo_final-tiempo_inicio));
 		
 		
 		long tiempo_inicio_Merge= System.nanoTime();
 		c.ordenaVias();
 		long tiempo_final_Merge = System.nanoTime();
-		System.out.println("Tiempo ordenando vías por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
+		System.out.println("Tiempo ordenando vias por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
 
 		
-		assertTrue("Tiempo de ejecución del algorimo Mergesort mayor.",(tiempo_final_Merge-tiempo_inicio_Merge) < (tiempo_final-tiempo_inicio));
+		assertTrue("El tiempo de ejecucion del algorimo Mergesort es bastante menor que el de seleccion (menos de la mitad).",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
 		
 	}
 

@@ -71,6 +71,29 @@ public class PruebaCallejero {
 	
 	@Test
 	public void testTiempoOrdenaViasPorNombre() {
+		long tiempo_inicio= System.nanoTime();
+		for (int i = 0; i < c.vias.length; i++) {
+			int m = i;
+			for (int j = i+1; j < c.vias.length; j++) {
+				if(c.vias[j].getNombre().compareTo(c.vias[m].getNombre()) < 0)
+					m = j;
+			}
+			Via aux = c.vias[i];
+			c.vias[i] = c.vias[m];
+			c.vias[m] = aux;
+		}
+		long tiempo_final = System.nanoTime();
+		System.out.println("Tiempo ordenando vías por algoritmo de selección: " + (tiempo_final-tiempo_inicio));
+		
+		
+		long tiempo_inicio_Merge= System.nanoTime();
+		c.ordenaVias();
+		long tiempo_final_Merge = System.nanoTime();
+		System.out.println("Tiempo ordenando vías por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
+
+		
+		assertTrue("Tiempo de ejecución del algorimo Mergesort mayor.",(tiempo_final_Merge-tiempo_inicio_Merge) < (tiempo_final-tiempo_inicio));
+		
 	}
 
-}
+	}

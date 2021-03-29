@@ -91,7 +91,7 @@ public class PruebaCallejero {
 		long tiempo_final_Merge = System.nanoTime();
 		System.out.println("Tiempo ordenando vias por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
 
-		assertTrue("El tiempo de ejecucion del algorimo Mergesort es bastante menor que el de seleccion (menos de la mitad).",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
+		assertTrue("El tiempo de ejecucion del algorimo Mergesort es mas del doble que el de seleccion.",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
 		
 	}
 	
@@ -118,11 +118,11 @@ public class PruebaCallejero {
 		System.out.println("Tiempo ordenando vias por algoritmo de seleccion: " + (tiempo_final-tiempo_inicio));
 		
 		long tiempo_inicio_Merge= System.nanoTime();
-		c.ordenaVias();
+		c.ordenaViasPorNombre();
 		long tiempo_final_Merge = System.nanoTime();
 		System.out.println("Tiempo ordenando vias por algoritmo Mergesort: " + (tiempo_final_Merge-tiempo_inicio_Merge));
 
-		assertTrue("El tiempo de ejecucion del algorimo Mergesort es bastante menor que el de seleccion (menos de la mitad).",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
+		assertTrue("El tiempo de ejecucion del algorimo Mergesort es mas del doble que el de seleccion.",(tiempo_final_Merge-tiempo_inicio_Merge) < 0.5*(tiempo_final-tiempo_inicio));
 		
 	}
 

@@ -98,7 +98,7 @@ public class Callejero {
     }
 	
 	/**
-	 * Metodo que compara los codigos o los nombres de las via y las ordena
+	 * Metodo que compara los codigos o los nombres de las vias y las ordena
 	 * @param data array de Via para ordenar
 	 * @param aux array de Via del tamaño de vias
 	 * @param iLeft indice izquierdo
@@ -182,7 +182,7 @@ public class Callejero {
 	
 	/**
 	 * Metodo que comprueba si vias ya esta ordenada por nombre y crea un nuevo array de vias
-	 * Algoritmo Mergesort que devuelve el cojunto de vias ordenadas por nombre
+	 * Algoritmo Mergesort que devuelve el conjunto de vias ordenadas por nombre
 	 * @return conjunto de vias ordenadas por nombre 
 	 */
 	public Via[] ordenaViasPorNombre() {

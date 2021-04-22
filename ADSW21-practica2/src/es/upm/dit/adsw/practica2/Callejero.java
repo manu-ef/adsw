@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ import java.util.Set;
  * el ayuntamiento de Madrid
  * 
  * @author mmiguel
+ * @author anamtnez3
+ * @author manu-ef
  *
  */
 public class Callejero {
@@ -36,6 +41,7 @@ public class Callejero {
 
 	protected static final String fichero="VialesVigentes_20201220.csv";
 	protected Via[] vias;
+	private boolean viasYaOrdenadasPorNombre;
 
 	/**
 	 * Constructor de callejero a partir de algun tipo de stream que 
@@ -60,6 +66,7 @@ public class Callejero {
 		}
 		viales.close();
 		inicializaReferencias();
+		viasYaOrdenadasPorNombre = false;
 	}
 	
 	/**
@@ -68,7 +75,21 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas o en el constructor
 	 */
 	public void inicializaReferencias() {
-		// TODO
+		ordenaVias();
+		
+		Map<Integer,Via> viasAux = viasAux(vias);
+		for (Via via : vias) {
+			via.setViaComienzo(viasAux.get(via.getComienza()));
+			via.setViaTermina(viasAux.get(via.getTermina()));
+		}
+	}
+	
+	private Map<Integer,Via> viasAux (Via[] vias) {
+		Map<Integer, Via> viasAux = new HashMap<Integer, Via>();
+		for (Via via : vias) {
+			viasAux.put(via.getCodigo(), via);
+		}
+		return viasAux;
 	}
 	
 	/**
@@ -78,6 +99,7 @@ public class Callejero {
 	public void ordenaVias() {
 		// TODO
 		SolucionP1.ordenaVias(vias);
+		viasYaOrdenadasPorNombre = false;
 	}
 	
 	/**
@@ -86,8 +108,20 @@ public class Callejero {
 	 * @return via cuyo codigo es codigo, o null si no existe
 	 */
 	public Via buscaViaCodigo(int codigo) {
-		// TODO 
-		return null;
+		return buscaViaCodigo(codigo, 0, vias.length-1); 
+
+	}
+	
+	private Via buscaViaCodigo(int codigo, int a, int z) {
+		if (a >= z)
+			return vias[a];
+		int m = (a + z) / 2;
+		if (codigo == vias[m].getCodigo())
+			return vias[m];
+		if (codigo < vias[m].getCodigo())
+			return buscaViaCodigo(codigo, 0, m);
+		else
+			return buscaViaCodigo(codigo, m + 1, z);  
 	}
 	
 	/**
@@ -123,8 +157,8 @@ public class Callejero {
 	 * @return conjunto de vias ordenadas por nombre 
 	 */
 	public void ordenaViasPorNombre(Via[] vias) {
-		// TODO
 		SolucionP1.ordenaViasPorNombre(vias);
+		viasYaOrdenadasPorNombre = true;
 	}
 	
 	/**
@@ -136,8 +170,27 @@ public class Callejero {
 	 * @return conjunto de vias que comienza por viaBuscada
 	 */
 	public Set<Via> buscaVia(String viaBuscada) {
-		// TODO
-		return null;
+		if (viasYaOrdenadasPorNombre == false)
+			ordenaViasPorNombre(vias);
+		return buscaVia(viaBuscada, 0, vias.length-1);
+	}
+	
+	private Set<Via> buscaVia(String viaBuscada, int a, int z) {
+		Set<Via> encontradas = new HashSet<>();
+		while (a < z) {
+			int m = (a+z)/2;
+			boolean contains = vias[m].getNombre().contains(viaBuscada);
+			int cmp = vias[m].getNombre().compareTo(viaBuscada);
+			if (contains){
+				encontradas.add(vias[m]);
+			}
+			if (cmp < 0) {
+				a = m+1;
+			} else {
+				z = m;
+			}
+		}
+		return encontradas;
 	}
 
 	public static void main(String[] args) {

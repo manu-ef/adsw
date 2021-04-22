@@ -93,7 +93,7 @@ public class Callejero {
 	}
 	
 	/**
-	 * Metodo que ordena las vias en función del código de via.
+	 * Metodo que ordena las vias en funcion del codigo de via.
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
@@ -108,6 +108,7 @@ public class Callejero {
 	 * @return via cuyo codigo es codigo, o null si no existe
 	 */
 	public Via buscaViaCodigo(int codigo) {
+		ordenaVias();
 		return buscaViaCodigo(codigo, 0, vias.length-1); 
 
 	}
@@ -162,7 +163,7 @@ public class Callejero {
 	}
 	
 	/**
-	 * Devuelve el cojunto de vias del callejero cuyo nombre comienza
+	 * Devuelve el conjunto de vias del callejero cuyo nombre comienza
 	 * por viaBuscada
 	 * 
 	 * @param viaBuscada secuencia de caracteres en mayusculas con las 
@@ -208,6 +209,7 @@ public class Callejero {
 			viales.nextLine(); // nos saltamos las cabeceras del fichero
 			Callejero c=new Callejero(viales,lineas-1);
 			c.printViales();
+			c.buscaVia("CORONA");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

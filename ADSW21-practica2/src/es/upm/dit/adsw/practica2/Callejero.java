@@ -41,6 +41,7 @@ public class Callejero {
 
 	protected static final String fichero="VialesVigentes_20201220.csv";
 	protected Via[] vias;
+	private boolean viasYaOrdenadasPorCodigo;
 	private boolean viasYaOrdenadasPorNombre;
 
 	/**
@@ -66,6 +67,7 @@ public class Callejero {
 		}
 		viales.close();
 		inicializaReferencias();
+		viasYaOrdenadasPorCodigo = true;
 		viasYaOrdenadasPorNombre = false;
 	}
 	
@@ -99,6 +101,7 @@ public class Callejero {
 	public void ordenaVias() {
 		// TODO
 		SolucionP1.ordenaVias(vias);
+		viasYaOrdenadasPorCodigo = true;
 		viasYaOrdenadasPorNombre = false;
 	}
 	
@@ -108,7 +111,9 @@ public class Callejero {
 	 * @return via cuyo codigo es codigo, o null si no existe
 	 */
 	public Via buscaViaCodigo(int codigo) {
-		ordenaVias();
+		if (viasYaOrdenadasPorCodigo == false)
+			ordenaVias();
+		
 		return buscaViaCodigo(codigo, 0, vias.length-1); 
 
 	}
@@ -159,6 +164,7 @@ public class Callejero {
 	 */
 	public void ordenaViasPorNombre(Via[] vias) {
 		SolucionP1.ordenaViasPorNombre(vias);
+		viasYaOrdenadasPorCodigo = false;
 		viasYaOrdenadasPorNombre = true;
 	}
 	
@@ -184,6 +190,8 @@ public class Callejero {
 			int cmp = vias[m].getNombre().compareTo(viaBuscada);
 			if (contains){
 				encontradas.add(vias[m]);
+				encontradas.addAll(buscaVia(viaBuscada,a, m));
+				encontradas.addAll(buscaVia(viaBuscada, m+1, z));
 			}
 			if (cmp < 0) {
 				a = m+1;
@@ -209,7 +217,6 @@ public class Callejero {
 			viales.nextLine(); // nos saltamos las cabeceras del fichero
 			Callejero c=new Callejero(viales,lineas-1);
 			c.printViales();
-			c.buscaVia("CORONA");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

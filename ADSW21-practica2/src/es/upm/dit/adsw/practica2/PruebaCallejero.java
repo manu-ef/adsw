@@ -124,7 +124,7 @@ public class PruebaCallejero {
 		assertTrue(c.buscaVia("FILOMENA").isEmpty());
 		
 		System.out.println(c.buscaVia("CORONA"));
-		//assertEquals(c.buscaVia("CORONA"), );
+		assertEquals(c.buscaVia("CORONA").size(), 3);
 	}
 
 }

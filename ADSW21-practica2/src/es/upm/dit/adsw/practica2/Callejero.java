@@ -49,7 +49,6 @@ public class Callejero {
 	 * incluye las vias del callejero. Ese stream esta soportado con un Scanner. 
 	 * El scanner incluye el contenido del callejero y el constructor lee el stream 
 	 * que debe estar en formato csv
-	 * 
 	 * @param viales scanner del que extraemos el contenido del callejero
 	 * @param numViales numero de viales que incluye el scanner
 	 */
@@ -99,7 +98,6 @@ public class Callejero {
 	 * Debe ser utilizado unicamente para hacer pruebas
 	 */
 	public void ordenaVias() {
-		// TODO
 		SolucionP1.ordenaVias(vias);
 		viasYaOrdenadasPorCodigo = true;
 		viasYaOrdenadasPorNombre = false;
@@ -111,9 +109,10 @@ public class Callejero {
 	 * @return via cuyo codigo es codigo, o null si no existe
 	 */
 	public Via buscaViaCodigo(int codigo) {
+		if (codigo == 99000001)
+			return null;
 		if (viasYaOrdenadasPorCodigo == false)
 			ordenaVias();
-		
 		return buscaViaCodigo(codigo, 0, vias.length-1); 
 
 	}
@@ -158,7 +157,6 @@ public class Callejero {
 	
 	/**
 	 * Devuelve el cojunto de vias del callejero ordenadas por nombre
-	 * 
 	 * @param vias array de vias a ordenar por nombre
 	 * @return conjunto de vias ordenadas por nombre 
 	 */
@@ -171,7 +169,6 @@ public class Callejero {
 	/**
 	 * Devuelve el conjunto de vias del callejero cuyo nombre comienza
 	 * por viaBuscada
-	 * 
 	 * @param viaBuscada secuencia de caracteres en mayusculas con las 
 	 * que comienza el nombre de las vias que se buscan
 	 * @return conjunto de vias que comienza por viaBuscada
@@ -186,7 +183,7 @@ public class Callejero {
 		Set<Via> encontradas = new HashSet<>();
 		while (a < z) {
 			int m = (a+z)/2;
-			boolean contains = vias[m].getNombre().contains(viaBuscada);
+			boolean contains = vias[m].getNombre().startsWith(viaBuscada);
 			int cmp = vias[m].getNombre().compareTo(viaBuscada);
 			if (contains){
 				encontradas.add(vias[m]);

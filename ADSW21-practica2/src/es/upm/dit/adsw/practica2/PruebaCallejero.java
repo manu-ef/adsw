@@ -9,8 +9,6 @@ import java.util.Scanner;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-//import es.upm.dit.adsw.practica1.Via;
-
 /**
  * Clase JUnit para comprobar los resultados de Callejero
  * @author anamtnez3
@@ -46,7 +44,7 @@ public class PruebaCallejero {
 	}
 	
 	/**
-	 * 
+	 * Comprobamos los metodos buscaViaCodigo() y comprobamos las referencias
 	 */
 	@Test
 	public void pruebaGetViaComienzo() {
@@ -66,7 +64,7 @@ public class PruebaCallejero {
 	}
 	
 	/**
-	 * 
+	 * Comprobamos el tiempo que se tarda en inicializar las referencias comparandolo con un algoritmo de complejidad O(N^2)
 	 */
 	@Test
 	public void tiempoInicializaReferencias() {
@@ -93,7 +91,7 @@ public class PruebaCallejero {
 	}
 	
 	/**
-	 * 
+	 * Comprobamos el tiempo que tarda buscaViaCodigo() y si es menos de la mitad
 	 */
 	@Test
 	public void tiempoBuscaViaCodigo() {
@@ -116,7 +114,7 @@ public class PruebaCallejero {
 	}
 	
 	/**
-	 * 
+	 * Comprobamos buscaVia() pasando como parametros FILOMENA y CORONA
 	 */
 	@Test
 	public void pruebaBuscaVia() {

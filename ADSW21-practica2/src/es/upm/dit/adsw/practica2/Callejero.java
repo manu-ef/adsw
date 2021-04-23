@@ -109,24 +109,22 @@ public class Callejero {
 	 * @return via cuyo codigo es codigo, o null si no existe
 	 */
 	public Via buscaViaCodigo(int codigo) {
-		if (codigo == 99000001)
-			return null;
 		if (viasYaOrdenadasPorCodigo == false)
 			ordenaVias();
-		return buscaViaCodigo(codigo, 0, vias.length-1); 
+		return buscaViaCodigo(codigo, 0, vias.length); 
 
 	}
 	
 	private Via buscaViaCodigo(int codigo, int a, int z) {
 		if (a >= z)
-			return vias[a];
+			return null;
 		int m = (a + z) / 2;
 		if (codigo == vias[m].getCodigo())
 			return vias[m];
 		if (codigo < vias[m].getCodigo())
 			return buscaViaCodigo(codigo, 0, m);
 		else
-			return buscaViaCodigo(codigo, m + 1, z);  
+			return buscaViaCodigo(codigo, m + 1, z);
 	}
 	
 	/**
@@ -176,7 +174,7 @@ public class Callejero {
 	public Set<Via> buscaVia(String viaBuscada) {
 		if (viasYaOrdenadasPorNombre == false)
 			ordenaViasPorNombre(vias);
-		return buscaVia(viaBuscada, 0, vias.length-1);
+		return buscaVia(viaBuscada, 0, vias.length);
 	}
 	
 	private Set<Via> buscaVia(String viaBuscada, int a, int z) {

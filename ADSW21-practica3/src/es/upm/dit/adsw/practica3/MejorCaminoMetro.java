@@ -5,9 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 public class MejorCaminoMetro {
 
 	private MapaMetro mapa;
+	private double[] distTo;
+	private Tramo[] edgeTo;
+	private IndexMinPQ<Double> pq;
 	
 	/**
 	 * Construye un buscado de caminos de metro a partir de un mapa de metro
@@ -36,8 +40,46 @@ public class MejorCaminoMetro {
      * @throws java.lang.IllegalArgumentException cuando el origen o el destino son null o no son posiciones del mapa
      */
     public List<Tramo> caminoMasRapido(Estacion origen, Estacion destino) {
-    	// TODO
+    	
+    	// Ajuste del tamaño (hay mapas con identificador que empieza por 0 o por 1)
+    	int tamano = mapa.getEstaciones().size();
+    	Estacion[] estacionesDijkstra = new Estacion[tamano];
+    	
+    	// Copiamos cada estacion del mapa al nuevo array a la posicion dada por su identificador 
+    	for (int i=0; i < mapa.getEstaciones().size(); i++) {
+    		for (Estacion e : mapa.getEstaciones()) {
+    			estacionesDijkstra[i] = e;
+    		}
+    	}
+    	
+    	// Algoritmo de DIJKSTRA
+    	distTo = new double[mapa.getEstaciones().size()];
+    	edgeTo = new Tramo[mapa.getEstaciones().size()];
+    	pq = new IndexMinPQ<Double>(mapa.getEstaciones().size());
+    	
+    	for (int v = 0; v < mapa.getEstaciones().size(); v++)
+            distTo[v] = Double.POSITIVE_INFINITY;
+        distTo[origen.getId()] = 0.0;
+    	
+        pq.insert(origen.getId(), distTo[origen.getId()]);
+        while (!pq.isEmpty()) {
+            int v = pq.delMin();
+            for (Tramo t : mapa.getSalidasEstacion(estacionesDijkstra[v])) {
+            	relax(t);
+            }
+        } 
+        // TODO
         return null;
+    }
+    
+    private void relax(Tramo t) {
+        int v = t.desde().getId(), w = t.hasta().getId();
+        if (distTo[t.hasta().getId()] > distTo[v] + t.tiempo()) {
+            distTo[t.hasta().getId()] = distTo[v] + t.tiempo();
+            edgeTo[t.hasta().getId()] = t;
+            if (pq.contains(t.hasta().getId())) pq.decreaseKey(t.hasta().getId(), distTo[t.hasta().getId()]);
+            else                pq.insert(t.hasta().getId(), distTo[t.hasta().getId()]);
+        }        
     }
     
     /**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.HashMap;
 
 
 public class MejorCaminoMetro {
@@ -42,43 +43,54 @@ public class MejorCaminoMetro {
     public List<Tramo> caminoMasRapido(Estacion origen, Estacion destino) {
     	
     	// Ajuste del tamaño (hay mapas con identificador que empieza por 0 o por 1)
-    	int tamano = mapa.getEstaciones().size();
-    	Estacion[] estacionesDijkstra = new Estacion[tamano];
+    	HashMap<Integer, Estacion> estacionesDijkstra = new HashMap<Integer, Estacion>();
     	
     	// Copiamos cada estacion del mapa al nuevo array a la posicion dada por su identificador 
-    	for (int i=0; i < mapa.getEstaciones().size(); i++) {
-    		for (Estacion e : mapa.getEstaciones()) {
-    			estacionesDijkstra[i] = e;
-    		}
-    	}
+		for (Estacion e : mapa.getEstaciones()) {
+			estacionesDijkstra.put(e.getId(), e);
+		}
     	
     	// Algoritmo de DIJKSTRA
-    	distTo = new double[mapa.getEstaciones().size()];
-    	edgeTo = new Tramo[mapa.getEstaciones().size()];
-    	pq = new IndexMinPQ<Double>(mapa.getEstaciones().size());
+    	distTo = new double[estacionesDijkstra.size()+1];
+    	edgeTo = new Tramo[estacionesDijkstra.size()+1];
+    	pq = new IndexMinPQ<Double>(estacionesDijkstra.size()+1);
     	
-    	for (int v = 0; v < mapa.getEstaciones().size(); v++)
+    	for (int v = 0; v < estacionesDijkstra.size(); v++)
             distTo[v] = Double.POSITIVE_INFINITY;
         distTo[origen.getId()] = 0.0;
     	
         pq.insert(origen.getId(), distTo[origen.getId()]);
         while (!pq.isEmpty()) {
             int v = pq.delMin();
-            for (Tramo t : mapa.getSalidasEstacion(estacionesDijkstra[v])) {
+            for (Tramo t : mapa.getSalidasEstacion(estacionesDijkstra.get(v))) {
             	relax(t);
             }
         } 
-        // TODO
-        return null;
+        
+        List<Tramo> camino = new ArrayList<Tramo>();
+        List<Tramo> caminoDerecho = new ArrayList<Tramo>();
+        
+        if(distTo[destino.getId()] != Double.POSITIVE_INFINITY) {
+        	Tramo t = edgeTo[destino.getId()]; 
+        	while (t != null) {
+        		camino.add(t);
+        		t = edgeTo[t.desde().getId()];
+        	}
+        	for (int i = camino.size()-1; i >= 0; i--)
+        		caminoDerecho.add(camino.get(i));
+        }
+        return caminoDerecho;
     }
     
     private void relax(Tramo t) {
         int v = t.desde().getId(), w = t.hasta().getId();
-        if (distTo[t.hasta().getId()] > distTo[v] + t.tiempo()) {
-            distTo[t.hasta().getId()] = distTo[v] + t.tiempo();
-            edgeTo[t.hasta().getId()] = t;
-            if (pq.contains(t.hasta().getId())) pq.decreaseKey(t.hasta().getId(), distTo[t.hasta().getId()]);
-            else                pq.insert(t.hasta().getId(), distTo[t.hasta().getId()]);
+        if (distTo[w] > distTo[v] + t.tiempo()) {
+            distTo[w] = distTo[v] + t.tiempo();
+            edgeTo[w] = t;
+            if (pq.contains(w))
+            	pq.decreaseKey(w, distTo[w]);
+            else
+            	pq.insert(w, distTo[w]);
         }        
     }
     

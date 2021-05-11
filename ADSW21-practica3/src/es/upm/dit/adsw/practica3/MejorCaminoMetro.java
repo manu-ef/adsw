@@ -40,23 +40,28 @@ public class MejorCaminoMetro {
      * @return secuencia de tramos a seguir
      * @throws java.lang.IllegalArgumentException cuando el origen o el destino son null o no son posiciones del mapa
      */
-    public List<Tramo> caminoMasRapido(Estacion origen, Estacion destino) {
+    public List<Tramo> caminoMasRapido(Estacion origen, Estacion destino){
+    	// Comprobamos que los parametros son correctos
+    	if (origen == null || destino == null)
+    		throw new IllegalArgumentException("El origen o el destino es null");
     	
-    	// Ajuste del tamaño (hay mapas con identificador que empieza por 0 o por 1)
+    	if (!mapa.getEstaciones().contains(origen) || !mapa.getEstaciones().contains(destino)) {
+    		throw new IllegalArgumentException("El origen o el destino estan fuera del mapa");
+    	}
+    	
+    	// HashMap para establecer una relacion id-estacion
     	HashMap<Integer, Estacion> estacionesDijkstra = new HashMap<Integer, Estacion>();
-    	
-    	// Copiamos cada estacion del mapa al nuevo array a la posicion dada por su identificador 
-		for (Estacion e : mapa.getEstaciones()) {
+    	for (Estacion e : mapa.getEstaciones()) {
 			estacionesDijkstra.put(e.getId(), e);
 		}
     	
-    	// Algoritmo de DIJKSTRA
+    	// Algoritmo de DIJKSTRA adaptado de la Universidad de Princeton
     	distTo = new double[estacionesDijkstra.size()+1];
     	edgeTo = new Tramo[estacionesDijkstra.size()+1];
     	pq = new IndexMinPQ<Double>(estacionesDijkstra.size()+1);
     	
     	for (int v = 0; v < estacionesDijkstra.size(); v++)
-            distTo[v] = Double.POSITIVE_INFINITY;
+    		distTo[v] = Double.POSITIVE_INFINITY;
         distTo[origen.getId()] = 0.0;
     	
         pq.insert(origen.getId(), distTo[origen.getId()]);
@@ -65,23 +70,30 @@ public class MejorCaminoMetro {
             for (Tramo t : mapa.getSalidasEstacion(estacionesDijkstra.get(v))) {
             	relax(t);
             }
-        } 
+        }
         
-        List<Tramo> camino = new ArrayList<Tramo>();
-        List<Tramo> caminoDerecho = new ArrayList<Tramo>();
+        // Recuperamos los tramos guardados por Dijkstra
+        List<Tramo> recorridoInverso = new ArrayList<Tramo>();
+        List<Tramo> recorrido = new ArrayList<Tramo>();
         
         if(distTo[destino.getId()] != Double.POSITIVE_INFINITY) {
         	Tramo t = edgeTo[destino.getId()]; 
         	while (t != null) {
-        		camino.add(t);
+        		recorridoInverso.add(t);
         		t = edgeTo[t.desde().getId()];
         	}
-        	for (int i = camino.size()-1; i >= 0; i--)
-        		caminoDerecho.add(camino.get(i));
+        	// Recorremos la lista desde el final para invertir el orden de los tramos
+        	while(recorridoInverso.size() > 0) {
+        		recorrido.add(recorridoInverso.remove(recorridoInverso.size()-1));
+        	}
         }
-        return caminoDerecho;
+        return recorrido;
     }
     
+    /**
+     * Actualiza las distancias minimas y la cola de prioridad segun el algoritmo de Dijkstra
+     * @param t tramo de estudio
+     */
     private void relax(Tramo t) {
         int v = t.desde().getId(), w = t.hasta().getId();
         if (distTo[w] > distTo[v] + t.tiempo()) {

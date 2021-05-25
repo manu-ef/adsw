@@ -202,10 +202,26 @@ public class Tren {
 	 * Si ya las hubiese terminado, no hay espera, y sino retornara cuando el tren haya terminado de moverse
 	 */
 	public void esperaElTrenPare() {
-		// TODO
+		try {
+			hebra.join();
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	public static void main(String[] arg) {
-		 // TODO
+		// Creamos el mapa
+		MapaMetro g = new MapaMetro("mapa_metro.txt");
+		g.dibuja();
+		ControlTrenes ct = new ControlTrenes();
+		
+		// Creamos una linea, una estacion y un tren
+		LineaMetro linea9 = g.getLineaMetro(9);
+		List<Estacion> estaciones = linea9.getEstaciones();
+		Estacion colombia = estaciones.get(2);
+		Tren v1 = new Tren("id000", linea9, colombia, ct);
+		//v1.moverElTren(estaciones.get(estaciones.size()-1), true); SIN HEBRAS
+		v1.arrancaTren(estaciones.get(estaciones.size()-1), true); // CON HEBRAS
+		
 	}
 }

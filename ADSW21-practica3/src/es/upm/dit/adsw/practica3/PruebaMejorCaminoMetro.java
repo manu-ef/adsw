@@ -135,4 +135,5 @@ public class PruebaMejorCaminoMetro {
 		assertEquals(7, paradas.length);
 		assertArrayEquals(solucion, paradas);
 	}
+	
 }

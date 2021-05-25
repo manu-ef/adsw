@@ -188,8 +188,13 @@ public class Tren {
 	 * @return devuelve la hebra creada
 	 */
 	public Thread arrancaTren(Estacion destino, boolean ida) {
-		// TODO
-		return null;
+		hebra = new Thread() {
+			public void run() {
+				moverElTren(destino, ida);
+			}
+		};
+		hebra.start();
+		return hebra;
 	}
 	
 	/**

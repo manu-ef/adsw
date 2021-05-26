@@ -179,10 +179,14 @@ public class Tren {
 		List<Estacion> estaciones1 = new ArrayList<Estacion>();
 		Tren tren1 = new Tren (this.id, this.linea, this.estacion, this.controlTrenes);
 		
-		while(this.controlTrenes.continuoDandoVueltas(tren1) == true){
-			estaciones1 = irA(getEstacion(), destino, ida);
+		while(this.controlTrenes.continuoDandoVueltas(tren1)){
+			estaciones1 = irA(estacion, destino, ida);
 		}
-		if (ida == true) {
+		
+		if(this.linea instanceof LineaMetroCircular)
+			ida = !ida;
+		
+		if (ida) {
 			moverElTren(this.linea.getEstaciones().get(0), false);
 		} else {
 			moverElTren(this.linea.getEstaciones().get(this.linea.getEstaciones().size()-1), true);
@@ -230,11 +234,19 @@ public class Tren {
 		
 		// Creamos una linea, una estacion y un tren
 		LineaMetro linea9 = g.getLineaMetro(9);
-		List<Estacion> estaciones = linea9.getEstaciones();
-		Estacion colombia = estaciones.get(2);
+		List<Estacion> estaciones9 = linea9.getEstaciones();
+		Estacion colombia = estaciones9.get(2);
 		Tren v1 = new Tren("id000", linea9, colombia, ct);
 		//v1.moverElTren(estaciones.get(estaciones.size()-1), true); SIN HEBRAS
-		v1.arrancaTren(estaciones.get(estaciones.size()-1), true); // CON HEBRAS
+		v1.arrancaTren(estaciones9.get(estaciones9.size()-1), true); // CON HEBRAS
+		
+		// Creamos una linea, una estacion y un tren
+		LineaMetro linea6 = g.getLineaMetro(6);
+		List<Estacion> estaciones6 = linea6.getEstaciones();
+		Estacion nuevos = estaciones6.get(0);
+		Tren v2 = new Tren("id001", linea6, nuevos, ct);
+		//v2.moverElTren(estaciones6.get(estaciones6.size()-1), true); SIN HEBRAS
+		v2.arrancaTren(estaciones6.get(estaciones6.size()-1), true); // CON HEBRAS
 		
 	}
 }

@@ -176,13 +176,12 @@ public class Tren {
 	 * al otro extermo de la línea y el método termina
 	 */
 	public void moverElTren(Estacion destino, boolean ida) {
-		List<Estacion> estaciones1 = new ArrayList<Estacion>();
 		Tren tren1 = new Tren (this.id, this.linea, this.estacion, this.controlTrenes);
 		
-		while(this.controlTrenes.continuoDandoVueltas(tren1)){
-			estaciones1 = irA(estacion, destino, ida);
+		if(this.controlTrenes.continuoDandoVueltas(tren1)){
+			irA(this.estacion, destino, ida);
 		}
-		
+				
 		if(this.linea instanceof LineaMetroCircular)
 			ida = !ida;
 		

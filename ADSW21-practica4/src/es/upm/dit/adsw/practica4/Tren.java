@@ -176,8 +176,21 @@ public class Tren {
 	 * al otro extermo de la línea y el método termina
 	 */
 	public void moverElTren(Estacion destino, boolean ida) {
-		// TODO
+		List<Estacion> estaciones1 = new ArrayList<Estacion>();
+		Tren tren1 = new Tren (this.id, this.linea, this.estacion, this.controlTrenes);
+		
+		while(this.controlTrenes.continuoDandoVueltas(tren1) == true){
+			estaciones1 = irA(getEstacion(), destino, ida);
+		}
+		if (ida == true) {
+			moverElTren(this.linea.getEstaciones().get(0), false);
+		} else {
+			moverElTren(this.linea.getEstaciones().get(this.linea.getEstaciones().size()-1), true);
+		}
 	}
+		
+
+	
 	
 	/**
 	 * Crea una hebra independiente que representa el movimiento del tren. La hebra mueve el tren según la 

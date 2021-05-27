@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 /**
  * Esta clase activa modela a los trenes y habilitan su animación 
  * @author mmiguel
+ * @author anamtnez3
+ * @author manu-ef
  */
 public class Tren {
 	private String id;
@@ -226,6 +228,7 @@ public class Tren {
 	}
 	
 	public static void main(String[] arg) {
+		
 		// Creamos el mapa
 		MapaMetro g = new MapaMetro("mapa_metro.txt");
 		g.dibuja();
@@ -236,16 +239,28 @@ public class Tren {
 		List<Estacion> estaciones9 = linea9.getEstaciones();
 		Estacion colombia = estaciones9.get(2);
 		Tren v1 = new Tren("id000", linea9, colombia, ct);
-		//v1.moverElTren(estaciones.get(estaciones.size()-1), true); SIN HEBRAS
-		v1.arrancaTren(estaciones9.get(estaciones9.size()-1), true); // CON HEBRAS
+		v1.arrancaTren(estaciones9.get(estaciones9.size()-1), true);
 		
 		// Creamos una linea, una estacion y un tren
 		LineaMetro linea6 = g.getLineaMetro(6);
 		List<Estacion> estaciones6 = linea6.getEstaciones();
 		Estacion nuevos = estaciones6.get(0);
 		Tren v2 = new Tren("id001", linea6, nuevos, ct);
-		//v2.moverElTren(estaciones6.get(estaciones6.size()-1), true); SIN HEBRAS
-		v2.arrancaTren(estaciones6.get(estaciones6.size()-1), true); // CON HEBRAS
+		v2.arrancaTren(estaciones6.get(estaciones6.size()-1), true);
+		
+		// Creamos una linea, una estacion y un tren
+		LineaMetro linea10 = g.getLineaMetro(10);
+		List<Estacion> estaciones10 = linea10.getEstaciones();
+		Estacion cham = estaciones10.get(0);
+		Tren v3 = new Tren("id002", linea10, cham, ct);
+		v3.arrancaTren(estaciones10.get(estaciones10.size()-1), true);
+				
+		// Creamos una linea, una estacion y un tren
+		LineaMetro linea4 = g.getLineaMetro(4);
+		List<Estacion> estaciones4 = linea4.getEstaciones();
+		Estacion prosp = estaciones4.get(0);
+		Tren v4 = new Tren("id003", linea4, prosp, ct);
+		v4.arrancaTren(estaciones4.get(estaciones4.size()-1), true);
 		
 	}
 }
